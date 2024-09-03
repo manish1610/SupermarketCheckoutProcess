@@ -1,26 +1,26 @@
 from checkout import Checkout
 from cart import Cart
-from pricing import PricingRule
-from setup import setup_store, setup_discounts
+from setup import setup
 
 
-def process_input(input_str: str) -> int:
-    store = setup_store()
-    discounts = setup_discounts(store)
-    pricing_rule = PricingRule(discounts)
+class Run:
+    def __init__(self):
+        self.store, self.discounts, self.pricing_rule = setup()
 
-    cart = Cart()
-    for item_name in input_str:
-        item = store.get_item(item_name)
-        cart.add_item(item)
+    def process_input(self, input_str):
+        cart = Cart()
+        for item_name in input_str:
+            item = self.store.get_item(item_name)
+            cart.add_item(item)
 
-    checkout = Checkout(cart, pricing_rule)
+        checkout = Checkout(cart, self.pricing_rule)
 
-    return checkout.total()
+        return checkout.total()
 
 
 if __name__ == "__main__":
-    test_inputs = [
+    run = Run()
+    inputs = [
         "",
         "A",
         "AB",
@@ -36,5 +36,5 @@ if __name__ == "__main__":
         "DABABA"
     ]
 
-    for input_str in test_inputs:
-        print(f"Input: {input_str} -> Total: {process_input(input_str)}")
+    for input_str in inputs:
+        print(f"Input: {input_str} -> Total: {run.process_input(input_str)}")

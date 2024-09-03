@@ -1,3 +1,4 @@
+from pricing import PricingRule
 from store import Item, Store, Discount
 from typing import Dict
 
@@ -20,3 +21,11 @@ def setup_discounts(store: Store) -> Dict[str, Discount]:
         'A': Discount(item_a, 3, 130),
         'B': Discount(item_b, 2, 45),
     }
+
+
+def setup():
+    store = setup_store()
+    discounts = setup_discounts(store)
+    pricing_rule = PricingRule(discounts)
+
+    return store, discounts, pricing_rule
