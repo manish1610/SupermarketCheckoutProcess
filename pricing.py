@@ -1,16 +1,20 @@
-from typing import Dict
+from typing import List
 from cart import Cart
 from store import Discount
 
 
 class PricingRule:
-    def __init__(self, discounts: Dict[str, Discount]):
-        self.discounts: Dict[str, Discount] = discounts
+    def __init__(self, discounts: List[Discount]):
+        self.discounts: List[Discount] = discounts
+        self.discounts_by_item = {
+            discount.item: discount
+            for discount in discounts
+        }
 
     def calculate_total(self, cart: Cart) -> int:
         total: int = 0
         for item, quantity in cart.get_items().items():
-            discount = self.discounts.get(item.name)
+            discount = self.discounts_by_item.get(item)
 
             if discount:
                 num_discounts = quantity // discount.quantity
